@@ -1,0 +1,32 @@
+format_version: 10
+pipelines:
+  testing-gocd-pipeline:
+    group: My-Pipelines
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      github:
+        git: https://github.com/sven-agnew/glowing-giggle.git
+        username: sven-agnew
+        shallow_clone: false
+        auto_update: false
+        branch: main
+        encrypted_password: AES:gbHVOoyGuVC1K96Y2+8LfA==:S3bpSowd2SYdc/LXpxdOvc6skL6SXnqT/Tauya86YVgsntANdTeknH9jkv6qPSuk
+    stages:
+    - cargo-check:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          run-cargo-check:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - check
+                command: cargo
+                run_if: passed
